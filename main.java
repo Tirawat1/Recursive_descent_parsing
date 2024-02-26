@@ -1,9 +1,11 @@
 import java.util.Scanner;
+import java.util.*;
 
 public class main {
 
     public static int index = 0;
     public static String input_globalString;
+    public static Map<vertex , List<vertex>> tree;
 
     public static boolean isGrammer(String input) {
         Character[] checkGrammer = { 'E', 'T', '(', ')','+','*'};
@@ -24,53 +26,35 @@ public class main {
         return true;
     }
 
-    public static boolean match(Character chk, Character correct) {
-        if (chk == correct) {
+
+    public static boolean match(Character chk, Character grammer) {
+        if (chk == grammer) {
             return true;
         }
         return false;
     }
 
-    public static boolean grammer_E() {
-
-        if(input_globalString.charAt(index) == '+'){ // call +TE
-            System.out.println(input_globalString.charAt(index) + " : E -> T+E");
-            grammer_T();
-            grammer_E();
-        }else{ // call T
-            System.out.println(input_globalString.charAt(index) + " : E -> T");
-            grammer_T();
-        }
-        return false;
+    public static void parse(){
+        vertex start = new vertex('E');
+        tree.put(start, null);
+        graph treeGraph = new graph(tree);
+        E();
     }
 
-    public static boolean grammer_T() {
-        if(input_globalString.charAt(index) == '('){ // call (T)
-            System.out.println(input_globalString.charAt(index) + " : T -> (E)");
-            index++;
-            grammer_E();
-            if(input_globalString.charAt(index) == ')'){
-                System.out.println(input_globalString.charAt(index) + " : T -> (E)");
+    public static boolean E(){
+        while(true){
+            if()
+
+            if(match()){
                 index++;
-            }else{
-                return false;
+                break;
             }
-        }else if(input_globalString.charAt(index) == '*'){ // call T -> *intT
-            System.out.println(input_globalString.charAt(index) + " : T -> int*T");
-            index++;
-            if(Character.isDigit(input_globalString.charAt(index))) {
-                grammer_T();
-                return true;
-            }
-        }else if(Character.isDigit(input_globalString.charAt(index))){ // call T -> int
-            System.out.println(input_globalString.charAt(index) + " : T -> int");
-            index++;
-            return true;
         }
         return false;
     }
 
-            public static void main(String[] args) {
+
+    public static void main(String[] args) {
         // System.out.println("Hello World");
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the string to parse: ");
@@ -78,9 +62,12 @@ public class main {
         input_globalString = input;
         if (isGrammer(input)) {
             // System.out.println("Valid Grammer");
-            grammer_E();
+            parse();
             if (index == input.length()) {
                 System.out.println("String is successfully parsed");
+            }
+            else{
+                System.out.println("String is failed parsed");
             }
         } else {
             System.out.println("Invalid parsing String");
